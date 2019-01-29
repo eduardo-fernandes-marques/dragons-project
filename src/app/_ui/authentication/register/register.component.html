@@ -1,0 +1,56 @@
+<div class="container" layout="row">
+  <div class="content">
+    <mat-card class="card">
+
+      <mat-card-title>
+        <h3>Registrar</h3>
+      </mat-card-title>
+
+      <mat-card-content>
+
+        <form (submit)="onSubmit()" [formGroup]="registerForm" novalidate>
+
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Primeiro Nome" [(ngModel)]="firstName" type="text" formControlName="firstName"
+              class="form-control" name="firstName" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
+            <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+              <div *ngIf="f.firstName.errors.required">Primeiro nome é necessário</div>
+            </div>
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Último Nome" [(ngModel)]="lastName" type="text" formControlName="lastName"
+              class="form-control" name="lastName" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
+            <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+              <div *ngIf="f.lastName.errors.required">Último nome é necessário</div>
+            </div>
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Login" [(ngModel)]="userName" type="text" formControlName="userName" class="form-control"
+              name="userName" [ngClass]="{ 'is-invalid': submitted && f.userName.errors }" />
+            <div *ngIf="submitted && f.userName.errors" class="invalid-feedback">
+              <div *ngIf="f.userName.errors.required">Login é necessário</div>
+            </div>
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Senha" [(ngModel)]="password" type="text" formControlName="password" class="form-control"
+              name="password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+            <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+              <div *ngIf="f.password.errors.required">Senha é necessária</div>
+              <div *ngIf="f.password.errors.minlength">Senha precisa ter no mínimo 6 digitos</div>
+            </div>
+          </mat-form-field>
+
+           <div class="form-group">
+              <button button="submit" [disabled]="loading" mat-raised-button color="primary"> Registrar</button>
+              <a href="/" class="btn btn-link" mat-raised-button color="primary">Voltar</a>
+          </div>
+        </form>
+
+      </mat-card-content>
+
+    </mat-card>
+  </div>
+</div>

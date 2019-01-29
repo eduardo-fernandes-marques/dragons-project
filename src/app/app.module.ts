@@ -1,28 +1,35 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { AppRoutingModule } from './modules/app-routing.module';
 import { AppComponent } from './app.component';
-import { AppMaterialModule } from './modules/app-material.module';
-import { AppUiModule } from './modules/app-ui.module';
-import { DragonsComponent } from './ui/dragons/dragons/dragons.component';
-import { ManageDragonsComponent } from './ui/dragons/manage-dragons/manage-dragons.component';
-import { AuthenticationComponent } from './ui/authentication/authentication.component';
+
+import { AppRoutingModule } from './_modules/app-routing.module';
+import { AppMaterialModule } from './_modules/app-material.module';
+import { AppUiModule } from './_modules/app-ui.module';
+
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+
+import { ErrorInterceptor } from './_helpers/error.interceptor';
+import { JwtInterceptor } from './_helpers/jwt.interceptor';
+import { FakeBackendProvider } from './_helpers/fake-backend';
+
 
 @NgModule({
   declarations: [
-    AppComponent,
-    DragonsComponent,
-    ManageDragonsComponent,
-    AuthenticationComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AppMaterialModule,
-    AppUiModule
+    AppUiModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    FakeBackendProvider
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
