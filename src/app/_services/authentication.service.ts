@@ -1,17 +1,21 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { environment } from './../../environments/environment';
+
 import { User } from './../_models/user';
+
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
     private currentUserSubject: BehaviorSubject<User>;
     public currentUser: Observable<User>;
-    public API_URL = 'http://localhost:4000';
+    public url = environment;
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private router: Router) {
         this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
         this.currentUser = this.currentUserSubject.asObservable();
     }
@@ -21,7 +25,7 @@ export class AuthenticationService {
     }
 
     login(username: string, password: string) {
-        return this.http.post<any>(`${this.API_URL}/users/authenticate`, { username, password })
+        return this.http.post<any>(`${this.url}/users/authenticate`, { username, password })
             .pipe(map(user => {
                 console.log(user);
                 if (user && user.token) {
@@ -36,5 +40,6 @@ export class AuthenticationService {
     logout() {
         localStorage.removeItem('currentUser');
         this.currentUserSubject.next(null);
+        this.router.navigate(['/login']);
     }
 }

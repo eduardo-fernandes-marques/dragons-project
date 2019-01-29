@@ -1,3 +1,31 @@
-<p>
-  dragons works!
-</p>
+<div class="dragons-container">
+  <h3>Your Dragons:</h3>
+
+  <mat-nav-list class="dragons-list">
+    <ng-container *ngFor="let dragon of dragons">
+      <mat-list-item (click)="this.edit(dragon)">
+        <span matLine>{{ dragon.name }}</span>
+        <span matLine style="color: #767678">{{ dragon.type }}</span>
+
+        <button mat-icon-button [matMenuTriggerFor]="options" (click)="this.menu($event)" matTooltip="Options">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #options="matMenu">
+          <button mat-menu-item (click)="this.edit(dragon)">
+            <mat-icon>edit</mat-icon>
+            <span>Edit</span>
+          </button>
+          <button mat-menu-item (click)="this.delete(dragon)">
+            <mat-icon>delete</mat-icon>
+            <span>Delete</span>
+          </button>
+        </mat-menu>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+    </ng-container>
+  </mat-nav-list>
+
+  <mat-paginator [length]="length" [pageIndex]="pageIndex" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+    (page)="onPaginate($event)">
+  </mat-paginator>
+</div>
