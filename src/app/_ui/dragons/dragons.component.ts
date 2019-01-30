@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { PageEvent } from '@angular/material';
+import { PageEvent, MatDialog } from '@angular/material';
+
+import { ModalConfirmationComponent } from './../../_ui/shared/modals/modal-confirmation/modal-confirmation.component';
 
 import { Dragon } from './../../_models/dragon';
 import { Response } from './../../_models/response';
@@ -17,13 +19,17 @@ const nameComparator = (a: Dragon, b: Dragon): number => `${a.name}`.localeCompa
   styleUrls: ['./dragons.component.scss']
 })
 export class DragonsComponent implements OnInit {
-  dragons: Array<Dragon> = [];
-  length: number;
-  pageSizeOptions: number[] = [5, 10, 25, 100];
-  pageIndex: number;
-  pageSize: number;
+  public dragons: Array<Dragon> = [];
+  public length: number;
+  public pageSizeOptions: number[] = [5, 10, 25, 100];
+  public pageIndex: number;
+  public pageSize: number;
+  public displayedColumns: any = [];
 
-  constructor(private dragonService: DragonService, private router: Router, private alertService: AlertService) { }
+  constructor(private dragonService: DragonService, private router: Router, private alertService: AlertService,
+    public dialogService: MatDialog) {
+      this.displayedColumns = ['created_at', 'name', 'type', '_id'];
+     }
 
   ngOnInit() {
     this.pageIndex = this.dragonService.page;
@@ -34,15 +40,11 @@ export class DragonsComponent implements OnInit {
   getDragons() {
     this.dragonService.list(this.pageIndex, this.pageSize).subscribe((res: Response) => {
       this.dragons = res.items.sort(nameComparator);
+      console.log(this.dragons);
       this.length = res._metadata.total_count;
     },
       error => this.alertService.error(error)
     );
-  }
-
-  menu(e: Event) {
-    e.preventDefault();
-    e.stopPropagation();
   }
 
   edit(dragon: Dragon) {
@@ -50,15 +52,42 @@ export class DragonsComponent implements OnInit {
   }
 
   delete(dragon: Dragon) {
-    this.dragonService.delete(dragon.slug).subscribe(
+    this.dragonService.delete(dragon._id).subscribe(
       () => this.dragons = this.dragons.filter(d => d._id !== dragon._id),
       error => this.alertService.error(error)
     );
   }
 
-  onPaginate(event: PageEvent) {
+  add() {
+    this.router.navigate(['dragons/']);
+  }
+
+  paginate(event: PageEvent) {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
     this.getDragons();
+  }
+
+  openModalConfirmation(dragon: Dragon) {
+    console.log(dragon);
+    const estadoInicial = {
+      typeModel: 'confirm-delete-dragon',
+      id: dragon.slug,
+      title: 'Confirmação de Exclusão de Dragão',
+      text: 'Tem certeza que deseja excluir este dragrão?',
+      alert: 'Essa função não poderá ser desfeita'
+    };
+
+    const dialogRef = this.dialogService.open(ModalConfirmationComponent, { data: estadoInicial });
+
+    dialogRef.afterClosed().subscribe(confirm => {
+      if (confirm) {
+        console.log(dragon.slug);
+        this.dragonService.delete(dragon.slug).subscribe(
+          () => this.dragons = this.dragons.filter(d => d._id !== dragon._id),
+          error => this.alertService.error(error)
+        );
+      }
+    });
   }
 }

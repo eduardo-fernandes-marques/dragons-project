@@ -15,6 +15,9 @@ import { ManageDragonsComponent } from './../_ui/dragons/manage-dragons/manage-d
 
 import { HomeComponent } from '../_ui/home/home.component';
 
+import { ModalConfirmationComponent } from './../_ui/shared/modals/modal-confirmation/modal-confirmation.component';
+
+import { DateFormatPipe } from './../../pipes/date-format.pipe';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,9 @@ import { HomeComponent } from '../_ui/home/home.component';
     HomeComponent,
     DragonsComponent,
     ManageDragonsComponent,
-    AlertComponent
+    AlertComponent,
+    ModalConfirmationComponent,
+    DateFormatPipe
   ],
   imports: [
     CommonModule,
@@ -39,7 +44,9 @@ import { HomeComponent } from '../_ui/home/home.component';
     HomeComponent,
     DragonsComponent,
     ManageDragonsComponent,
-    AlertComponent
-  ]
+    AlertComponent,
+    ModalConfirmationComponent
+  ],
+  entryComponents: [ModalConfirmationComponent]
 })
 export class AppUiModule { }
