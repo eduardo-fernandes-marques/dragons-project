@@ -15,14 +15,14 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
             if (request.url.endsWith('/users/authenticate') && request.method === 'POST') {
                 const filteredUsers = users.filter(user => {
-                    return user.userName === request.body.username && user.password === request.body.password;
+                    return user.userName === request.body.userName && user.password === request.body.password;
                 });
 
                 if (filteredUsers.length) {
                     const user = filteredUsers[0];
                     const body = {
                         id: user.id,
-                        username: user.username,
+                        userName: user.userName,
                         firstName: user.firstName,
                         lastName: user.lastName,
                         token: 'fake-jwt-token'
@@ -58,9 +58,9 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             if (request.url.endsWith('/users/register') && request.method === 'POST') {
                 const newUser = request.body;
 
-                const duplicateUser = users.filter(user => user.username === newUser.username).length;
+                const duplicateUser = users.filter(user => user.userName === newUser.userName).length;
                 if (duplicateUser) {
-                    return throwError({ error: { message: 'Username "' + newUser.username + '" is already taken' } });
+                    return throwError({ error: { message: 'Username "' + newUser.userName + '" is already taken' } });
                 }
 
                 newUser.id = users.length + 1;

@@ -15,11 +15,10 @@ import { AlertService } from '../../../_services/alert.service';
 export class LoginComponent implements OnInit {
   public loginForm: FormGroup;
   public loading = false;
-  public submitted = false;
   public returnUrl: string;
 
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router,
-    private authenticationService: AuthenticationService, private alertService: AlertService) {
+  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private alertService: AlertService,
+    private authenticationService: AuthenticationService,) {
     if (this.authenticationService.currentUserValue) {
       this.router.navigate(['/']);
     }
@@ -27,7 +26,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
+      userName: ['', Validators.required],
       password: ['', Validators.required]
     });
 
@@ -38,16 +37,14 @@ export class LoginComponent implements OnInit {
     return this.loginForm.controls;
   }
 
-  onSubmit() {
-    this.submitted = true;
-
+  submit() {
     if (this.loginForm.invalid) {
       return;
     }
 
     this.loading = true;
     this.authenticationService
-      .login(this.f.username.value, this.f.password.value)
+      .login(this.f.userName.value, this.f.password.value)
       .pipe(first())
       .subscribe(
         () => {
@@ -58,5 +55,9 @@ export class LoginComponent implements OnInit {
           this.loading = false;
         }
       );
+  }
+
+  register() {
+    this.router.navigate(['/register']);
   }
 }

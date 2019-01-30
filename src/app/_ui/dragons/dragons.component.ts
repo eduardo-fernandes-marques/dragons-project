@@ -40,7 +40,6 @@ export class DragonsComponent implements OnInit {
   getDragons() {
     this.dragonService.list(this.pageIndex, this.pageSize).subscribe((res: Response) => {
       this.dragons = res.items.sort(nameComparator);
-      console.log(this.dragons);
       this.length = res._metadata.total_count;
     },
       error => this.alertService.error(error)
@@ -48,7 +47,7 @@ export class DragonsComponent implements OnInit {
   }
 
   edit(dragon: Dragon) {
-    this.router.navigateByUrl(`dragons/${dragon.slug}`);
+    this.router.navigateByUrl(`manage-dragons/${dragon.slug}`);
   }
 
   delete(dragon: Dragon) {
@@ -59,7 +58,7 @@ export class DragonsComponent implements OnInit {
   }
 
   add() {
-    this.router.navigate(['dragons/']);
+    this.router.navigate(['/manage-dragons']);
   }
 
   paginate(event: PageEvent) {
@@ -69,7 +68,6 @@ export class DragonsComponent implements OnInit {
   }
 
   openModalConfirmation(dragon: Dragon) {
-    console.log(dragon);
     const estadoInicial = {
       typeModel: 'confirm-delete-dragon',
       id: dragon.slug,
@@ -82,7 +80,6 @@ export class DragonsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(confirm => {
       if (confirm) {
-        console.log(dragon.slug);
         this.dragonService.delete(dragon.slug).subscribe(
           () => this.dragons = this.dragons.filter(d => d._id !== dragon._id),
           error => this.alertService.error(error)
