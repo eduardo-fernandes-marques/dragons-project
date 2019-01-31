@@ -1,0 +1,34 @@
+<app-alert></app-alert>
+<div class="container" layout="row">
+  <div class="content">
+    <mat-card class="card">
+
+      <mat-card-title>
+        <h3>Login</h3>
+      </mat-card-title>
+
+      <mat-card-content>
+        <form (submit)="this.submit()" [formGroup]="loginForm" novalidate>
+
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Login" [(ngModel)]="this.userName" formControlName="userName" autocomplete="new-password" name="userName" required />
+          </mat-form-field>
+         
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Senha" [(ngModel)]="this.password" formControlName="password" autocomplete="new-password" type="password" name="password" required />
+          </mat-form-field>
+          
+          <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
+
+        
+          <div class="form-group">
+              <button button="submit" [disabled]="loading" mat-raised-button color="primary"> Login</button>
+              <button (click)="this.register()" mat-raised-button color="primary"> Registrar</button>
+          </div>
+        </form>
+
+      </mat-card-content>
+
+    </mat-card>
+  </div>
+</div>
