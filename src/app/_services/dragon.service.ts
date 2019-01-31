@@ -5,14 +5,15 @@ import { Observable } from 'rxjs';
 import { environment } from './../../environments/environment';
 
 import { Dragon } from './../_models/dragon';
-import { Response } from './../_models/response';
+import { Response } from '../_models/response';
+import { ResponseModel } from '../_models/response-model';
 
-const url  = environment.apiDragons;
 
 @Injectable({
   providedIn: 'root'
 })
 export class DragonService {
+  url  = environment.apiDragons;
   page = 0;
   size = 10;
 
@@ -25,22 +26,22 @@ export class DragonService {
       .set('page', `${page}`)
       .set('size', `${size}`);
 
-    return this.http.get<Response>(url, { params });
+    return this.http.get<Response>(this.url, { params });
   }
 
-  get(id: string): Observable<Dragon> {
-    return this.http.get<Dragon>(`${url}/${id}`);
+  get(slug: string): Observable<Dragon> {
+    return this.http.get<Dragon>(`${this.url}/${slug}`);
   }
 
   create(dragon: Dragon): Observable<Dragon> {
-    return this.http.post<Dragon>(url, dragon);
+    return this.http.post<Dragon>(this.url, dragon);
   }
 
-  update(dragon: Dragon): Observable<Dragon> {
-    return this.http.put<Dragon>(`${url}/${dragon.slug}`, dragon);
+  update(dragon: Dragon): Observable<ResponseModel> {
+    return this.http.put<ResponseModel>(`${this.url}/${dragon.slug}`, dragon);
   }
 
-  delete(id: string): Observable<Dragon> {
-    return this.http.delete<Dragon>(`${url}/${id}`);
+  delete(slug: string): Observable<ResponseModel> {
+    return this.http.delete<ResponseModel>(`${this.url}/${slug}`);
   }
 }

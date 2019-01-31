@@ -5,7 +5,7 @@ import { PageEvent, MatDialog } from '@angular/material';
 import { ModalConfirmationComponent } from './../../_ui/shared/modals/modal-confirmation/modal-confirmation.component';
 
 import { Dragon } from './../../_models/dragon';
-import { Response } from './../../_models/response';
+import { Response } from '../../_models/response';
 
 import { DragonService } from './../../_services/dragon.service';
 import { AlertService } from './../../_services/alert.service';
