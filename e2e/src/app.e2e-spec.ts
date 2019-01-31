@@ -1,16 +1,16 @@
 import { AppPage } from './app.po';
 import { browser, logging } from 'protractor';
 
-describe('workspace-project App', () => {
+describe('dragons-project App', () => {
   let page: AppPage;
 
   beforeEach(() => {
     page = new AppPage();
   });
 
-  it('should display welcome message', () => {
+  it('Get developer name', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual('Welcome to dragons-project!');
+    expect(page.getDeveloperName()).toEqual('Criado por Eduardo Fernandes Marques');
   });
 
   afterEach(async () => {
